@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partagez vos photos 📸</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2em; }
+    input, button { padding: 1em; margin-top: 1em; width: 80%; max-width: 400px; }
+  </style>
+</head>
+<body>
+  <h1>📷 Partagez vos photos !</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="photo" accept="image/*" required><br>
+    <button type="submit">Envoyer</button>
+  </form>
+  <p id="status"></p>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      const res = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (res.ok) {
+        status.textContent = "✅ Photo envoyée avec succès !";
+        form.reset();
+      } else {
+        status.textContent = "❌ Erreur lors de l'envoi.";
+      }
+    });
+  </script>
+</body>
+</html>
